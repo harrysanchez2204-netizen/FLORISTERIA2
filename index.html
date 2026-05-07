@@ -4,57 +4,69 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Floristería HVH</title>
-<!-- SheetJS for Excel export -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-<!-- jsPDF for PDF receipts -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<!-- Chart.js for dashboard -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet"/>
 <style>
 :root{
-  --rose:#c0546a;
-  --rose-dark:#8f3049;
-  --rose-light:#f5e6ea;
-  --rose-mid:#e8b4bf;
-  --cream:#fdf6f0;
-  --gold:#b8860b;
-  --gold-light:#f5e6a3;
-  --text:#2c1a22;
-  --text-muted:#7a5060;
-  --white:#ffffff;
-  --green:#2e7d52;
-  --green-light:#e8f5ee;
-  --red:#c0392b;
-  --red-light:#fdecea;
-  --border:#e8d0d8;
-  --shadow:0 4px 24px rgba(140,60,80,0.10);
-  --radius:14px;
+  --rose:#c0546a;--rose-dark:#8f3049;--rose-light:#f5e6ea;--rose-mid:#e8b4bf;
+  --cream:#fdf6f0;--gold:#b8860b;--gold-light:#f5e6a3;--text:#2c1a22;
+  --text-muted:#7a5060;--white:#ffffff;--green:#2e7d52;--green-light:#e8f5ee;
+  --red:#c0392b;--red-light:#fdecea;--border:#e8d0d8;
+  --shadow:0 4px 24px rgba(140,60,80,0.10);--radius:14px;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Lato',sans-serif;background:var(--cream);color:var(--text);min-height:100vh;}
 
-/* ─── HEADER ─── */
+/* ══ LOGIN ══ */
+#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,var(--rose-dark) 0%,var(--rose) 50%,#d4748a 100%);padding:20px;}
+.login-card{background:var(--white);border-radius:20px;padding:44px 36px;max-width:400px;width:100%;box-shadow:0 20px 60px rgba(100,20,40,.35);text-align:center;}
+.login-flower{font-size:3.5rem;margin-bottom:10px;display:block;animation:floatY 3s ease-in-out infinite;}
+@keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.login-title{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:var(--rose-dark);margin-bottom:4px;}
+.login-sub{font-size:.82rem;color:var(--text-muted);letter-spacing:3px;text-transform:uppercase;margin-bottom:28px;}
+.login-field{display:flex;flex-direction:column;gap:5px;text-align:left;margin-bottom:16px;}
+.login-field label{font-size:.78rem;font-weight:700;color:var(--text-muted);letter-spacing:.5px;text-transform:uppercase;}
+.login-field input{border:1.5px solid var(--border);border-radius:10px;padding:12px 16px;font-family:'Lato',sans-serif;font-size:.97rem;color:var(--text);background:var(--cream);transition:border-color .2s;}
+.login-field input:focus{outline:none;border-color:var(--rose);background:var(--white);}
+.login-btn{width:100%;background:linear-gradient(135deg,var(--rose-dark),var(--rose));color:var(--white);border:none;border-radius:30px;padding:14px;font-family:'Lato',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;letter-spacing:.5px;transition:all .2s;box-shadow:0 4px 14px rgba(143,48,73,.3);margin-top:6px;}
+.login-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(143,48,73,.4);}
+#login-error{color:var(--red);font-size:.85rem;font-weight:700;margin-top:10px;display:none;}
+.login-gs-status{margin-top:18px;font-size:.78rem;color:var(--text-muted);background:var(--cream);border-radius:8px;padding:8px 12px;}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#ccc;margin-right:5px;vertical-align:middle;}
+.dot.ok{background:var(--green);}
+.dot.warn{background:#f59e0b;}
+
+/* ══ APP ══ */
+#app-screen{display:none;}
 header{background:linear-gradient(135deg,var(--rose-dark) 0%,var(--rose) 60%,#d4748a 100%);padding:0;position:sticky;top:0;z-index:100;box-shadow:0 2px 16px rgba(143,48,73,0.25);}
 .header-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:14px 24px;flex-wrap:wrap;gap:10px;}
 .brand{display:flex;align-items:center;gap:12px;}
 .brand-icon{font-size:2rem;filter:drop-shadow(0 2px 4px rgba(0,0,0,.2));}
 .brand-name{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:900;color:var(--white);letter-spacing:1px;text-shadow:0 2px 8px rgba(0,0,0,.2);}
 .brand-sub{font-size:.72rem;color:var(--rose-mid);letter-spacing:3px;text-transform:uppercase;display:block;margin-top:-2px;}
+.header-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
 nav{display:flex;gap:6px;flex-wrap:wrap;}
 .nav-btn{background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.3);color:var(--white);padding:8px 18px;border-radius:30px;cursor:pointer;font-family:'Lato',sans-serif;font-size:.88rem;font-weight:700;letter-spacing:.5px;transition:all .2s;backdrop-filter:blur(4px);}
 .nav-btn:hover,.nav-btn.active{background:var(--white);color:var(--rose-dark);border-color:var(--white);}
+.logout-btn{background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.4);color:var(--white);padding:7px 14px;border-radius:30px;cursor:pointer;font-family:'Lato',sans-serif;font-size:.8rem;font-weight:700;transition:all .2s;}
+.logout-btn:hover{background:rgba(255,255,255,.25);}
 
-/* ─── LAYOUT ─── */
+/* ══ SHEETS BAR ══ */
+#sheets-bar{background:var(--white);border-bottom:1px solid var(--border);padding:7px 24px;display:flex;align-items:center;gap:8px;font-size:.78rem;color:var(--text-muted);flex-wrap:wrap;}
+#sheets-bar .dot{width:7px;height:7px;}
+#sheets-url-input{flex:1;min-width:180px;border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:.78rem;font-family:'Lato',sans-serif;background:var(--cream);color:var(--text);max-width:480px;}
+#sheets-url-input:focus{outline:none;border-color:var(--rose);}
+#sheets-save-btn{background:var(--rose-dark);color:#fff;border:none;border-radius:6px;padding:5px 14px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:'Lato',sans-serif;}
+
+/* ══ LAYOUT ══ */
 main{max-width:1200px;margin:0 auto;padding:28px 18px 60px;}
-.page{display:none;}
-.page.active{display:block;}
-
-/* ─── SECTION TITLE ─── */
+.page{display:none;}.page.active{display:block;}
 .section-title{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;color:var(--rose-dark);margin-bottom:6px;}
 .section-sub{color:var(--text-muted);font-size:.93rem;margin-bottom:28px;}
 
-/* ─── BOUQUET CARDS ─── */
+/* ══ CATALOG ══ */
 .catalog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px;margin-bottom:36px;}
 .bouquet-card{background:var(--white);border-radius:var(--radius);border:1.5px solid var(--border);padding:22px 18px;text-align:center;transition:box-shadow .2s,transform .2s;position:relative;overflow:hidden;}
 .bouquet-card:hover{box-shadow:var(--shadow);transform:translateY(-3px);}
@@ -69,7 +81,7 @@ main{max-width:1200px;margin:0 auto;padding:28px 18px 60px;}
 .stock-bar{margin-top:10px;background:#f0e0e6;border-radius:6px;height:6px;overflow:hidden;}
 .stock-fill{height:100%;background:linear-gradient(90deg,var(--rose),var(--rose-dark));border-radius:6px;transition:width .4s;}
 
-/* ─── FORM CARD ─── */
+/* ══ FORM ══ */
 .form-card{background:var(--white);border-radius:var(--radius);border:1.5px solid var(--border);padding:32px 28px;box-shadow:var(--shadow);}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
 @media(max-width:640px){.form-grid{grid-template-columns:1fr;}}
@@ -93,7 +105,7 @@ textarea{resize:vertical;min-height:80px;}
 .alert.success{background:var(--green-light);color:var(--green);display:block;}
 .alert.error{background:var(--red-light);color:var(--red);display:block;}
 
-/* ─── ORDERS TABLE ─── */
+/* ══ ORDERS ══ */
 .orders-toolbar{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px;align-items:center;}
 .search-box{flex:1;min-width:160px;border:1.5px solid var(--border);border-radius:8px;padding:9px 14px;font-family:'Lato',sans-serif;font-size:.9rem;background:var(--white);}
 .filter-select{border:1.5px solid var(--border);border-radius:8px;padding:9px 14px;font-family:'Lato',sans-serif;font-size:.88rem;background:var(--white);color:var(--text);}
@@ -110,14 +122,14 @@ tbody td{padding:12px 14px;font-size:.88rem;vertical-align:middle;}
 .badge-pago.abonado{background:#e0f0ff;color:#1565c0;}
 .td-actions{display:flex;gap:6px;flex-wrap:wrap;}
 
-/* ─── MODAL ─── */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(44,26,34,.55);z-index:200;backdrop-filter:blur(3px);align-items:center;justify-content:center;}
+/* ══ MODAL ══ */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(44,26,34,.55);z-index:300;backdrop-filter:blur(3px);align-items:center;justify-content:center;}
 .modal-overlay.open{display:flex;}
 .modal{background:var(--white);border-radius:var(--radius);padding:28px;max-width:520px;width:90%;max-height:90vh;overflow-y:auto;box-shadow:0 12px 48px rgba(143,48,73,.3);}
 .modal h3{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--rose-dark);margin-bottom:18px;}
 .modal-actions{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;}
 
-/* ─── DASHBOARD ─── */
+/* ══ DASHBOARD ══ */
 .dash-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-bottom:28px;}
 .stat-card{background:var(--white);border-radius:var(--radius);border:1.5px solid var(--border);padding:20px 18px;text-align:center;}
 .stat-icon{font-size:2rem;margin-bottom:6px;}
@@ -129,7 +141,16 @@ tbody td{padding:12px 14px;font-size:.88rem;vertical-align:middle;}
 .chart-title{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--rose-dark);margin-bottom:14px;font-weight:600;}
 .chart-card canvas{max-height:220px;}
 
-/* ─── MOBILE ─── */
+/* ══ SPINNER ══ */
+.spinner{display:inline-block;width:15px;height:15px;border:2.5px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-left:6px;}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ══ GUIDE ══ */
+.guide-box{background:#f0f7ff;border:1.5px solid #90caf9;border-radius:var(--radius);padding:18px 20px;margin-top:28px;}
+.guide-box h4{color:#1565c0;font-family:'Playfair Display',serif;margin-bottom:10px;font-size:1rem;}
+.guide-box ol{padding-left:18px;font-size:.88rem;color:#1a3a5c;line-height:2;}
+.guide-box code{background:#dbeafe;padding:2px 7px;border-radius:4px;font-family:monospace;font-size:.85rem;}
+
 @media(max-width:480px){
   .brand-name{font-size:1.25rem;}
   .header-inner{padding:10px 14px;}
@@ -137,6 +158,7 @@ tbody td{padding:12px 14px;font-size:.88rem;vertical-align:middle;}
   main{padding:18px 12px 50px;}
   .form-card{padding:20px 14px;}
   .section-title{font-size:1.4rem;}
+  .login-card{padding:28px 18px;}
 }
 .empty-state{text-align:center;padding:48px 20px;color:var(--text-muted);}
 .empty-state .es-icon{font-size:3rem;margin-bottom:10px;}
@@ -144,237 +166,333 @@ tbody td{padding:12px 14px;font-size:.88rem;vertical-align:middle;}
 </head>
 <body>
 
-<header>
-  <div class="header-inner">
-    <div class="brand">
-      <span class="brand-icon">🌸</span>
-      <div>
-        <span class="brand-name">Floristería HVH</span>
-        <span class="brand-sub">Inventario & Pedidos</span>
-      </div>
+<!-- ════════ LOGIN ════════ -->
+<div id="login-screen">
+  <div class="login-card">
+    <span class="login-flower">🌸</span>
+    <div class="login-title">Floristería HVH</div>
+    <div class="login-sub">Acceso al Sistema</div>
+    <div class="login-field">
+      <label>Usuario</label>
+      <input type="text" id="login-user" placeholder="floristeria_1010" autocomplete="username"/>
     </div>
-    <nav>
-      <button class="nav-btn active" onclick="showPage('catalogo')">🌺 Catálogo</button>
-      <button class="nav-btn" onclick="showPage('nuevo')">➕ Nuevo Pedido</button>
-      <button class="nav-btn" onclick="showPage('pedidos')">📋 Pedidos</button>
-      <button class="nav-btn" onclick="showPage('dashboard')">📊 Dashboard</button>
-    </nav>
+    <div class="login-field">
+      <label>Contraseña</label>
+      <input type="password" id="login-pass" placeholder="••••••••" autocomplete="current-password"
+        onkeydown="if(event.key==='Enter')doLogin()"/>
+    </div>
+    <button class="login-btn" onclick="doLogin()">Ingresar</button>
+    <div id="login-error">❌ Usuario o contraseña incorrectos</div>
+    <div class="login-gs-status">
+      <span class="dot warn" id="dot-login"></span>
+      Google Sheets: <span id="gs-status-txt">No configurado</span>
+    </div>
   </div>
-</header>
-
-<main>
-
-<!-- ═══════════════ CATÁLOGO ═══════════════ -->
-<div class="page active" id="page-catalogo">
-  <h2 class="section-title">🌸 Nuestros Ramos</h2>
-  <p class="section-sub">Colección exclusiva · Precios en pesos colombianos</p>
-  <div class="catalog-grid" id="catalog-grid"></div>
 </div>
 
-<!-- ═══════════════ NUEVO PEDIDO ═══════════════ -->
-<div class="page" id="page-nuevo">
-  <h2 class="section-title">➕ Nuevo Pedido</h2>
-  <p class="section-sub">Complete los datos para registrar el pedido</p>
-  <div class="form-card">
-    <div class="form-grid">
-      <div class="field">
-        <label>Nombre del Comprador</label>
-        <input type="text" id="f-comprador" placeholder="Nombre completo"/>
+<!-- ════════ APP ════════ -->
+<div id="app-screen">
+  <header>
+    <div class="header-inner">
+      <div class="brand">
+        <span class="brand-icon">🌸</span>
+        <div>
+          <span class="brand-name">Floristería HVH</span>
+          <span class="brand-sub">Inventario &amp; Pedidos</span>
+        </div>
       </div>
-      <div class="field">
-        <label>Tipo de Ramo</label>
-        <select id="f-ramo">
-          <option value="">— Seleccione —</option>
+      <div class="header-right">
+        <nav>
+          <button class="nav-btn active" onclick="showPage('catalogo')">🌺 Catálogo</button>
+          <button class="nav-btn" onclick="showPage('nuevo')">➕ Nuevo Pedido</button>
+          <button class="nav-btn" onclick="showPage('pedidos')">📋 Pedidos</button>
+          <button class="nav-btn" onclick="showPage('dashboard')">📊 Dashboard</button>
+        </nav>
+        <button class="logout-btn" onclick="doLogout()">🔒 Salir</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Google Sheets bar -->
+  <div id="sheets-bar">
+    <span class="dot warn" id="dot-bar"></span>
+    <strong style="color:var(--text);white-space:nowrap">Google Sheets:</strong>
+    <input id="sheets-url-input" placeholder="Pega aquí la URL de tu Google Apps Script Web App..." oninput="updateSheetsDot()"/>
+    <button id="sheets-save-btn" onclick="saveScriptUrl()">Guardar URL</button>
+    <span id="sheets-sync-status" style="color:var(--text-muted);white-space:nowrap"></span>
+  </div>
+
+  <main>
+
+    <!-- CATÁLOGO -->
+    <div class="page active" id="page-catalogo">
+      <h2 class="section-title">🌸 Nuestros Ramos</h2>
+      <p class="section-sub">Colección exclusiva · Precios en pesos colombianos</p>
+      <div class="catalog-grid" id="catalog-grid"></div>
+    </div>
+
+    <!-- NUEVO PEDIDO -->
+    <div class="page" id="page-nuevo">
+      <h2 class="section-title">➕ Nuevo Pedido</h2>
+      <p class="section-sub">Complete los datos para registrar el pedido</p>
+      <div class="form-card">
+        <div class="form-grid">
+          <div class="field">
+            <label>Nombre del Comprador</label>
+            <input type="text" id="f-comprador" placeholder="Nombre completo"/>
+          </div>
+          <div class="field">
+            <label>Tipo de Ramo</label>
+            <select id="f-ramo" onchange="updatePrecioHint()">
+              <option value="">— Seleccione —</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Método de Pago</label>
+            <select id="f-pago">
+              <option value="">— Seleccione —</option>
+              <option value="Nequi">Nequi</option>
+              <option value="Efectivo">Efectivo</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Abono Inicial (mín. $10.000)</label>
+            <input type="number" id="f-abono" placeholder="10000" min="10000"/>
+            <span class="abono-hint" id="precio-hint">Seleccione un ramo para ver el precio total</span>
+          </div>
+          <div class="field full">
+            <label>Dirección de Residencia</label>
+            <input type="text" id="f-dir" placeholder="Calle / Carrera, Barrio, Ciudad"/>
+          </div>
+          <div class="field">
+            <label>Nombre a quien se dirige</label>
+            <input type="text" id="f-destinatario" placeholder="Nombre del destinatario"/>
+          </div>
+          <div class="field">
+            <label>Fecha de Entrega</label>
+            <input type="date" id="f-fecha"/>
+          </div>
+          <div class="field full">
+            <label>Dedicatoria</label>
+            <textarea id="f-dedicatoria" placeholder="Escribe aquí tu dedicatoria especial..."></textarea>
+          </div>
+        </div>
+        <div class="btn-actions">
+          <button class="btn-primary" id="btn-save-order" onclick="saveOrder()">💾 Guardar Pedido</button>
+          <button class="btn-secondary" onclick="clearForm()">🗑 Limpiar</button>
+        </div>
+        <div id="form-alert" class="alert"></div>
+      </div>
+    </div>
+
+    <!-- PEDIDOS -->
+    <div class="page" id="page-pedidos">
+      <h2 class="section-title">📋 Pedidos Registrados</h2>
+      <p class="section-sub">Gestione, exporte y genere recibos de sus pedidos</p>
+      <div class="orders-toolbar">
+        <input class="search-box" id="search-input" placeholder="🔍 Buscar comprador, ramo..." oninput="renderOrders()"/>
+        <select class="filter-select" id="filter-status" onchange="renderOrders()">
+          <option value="">Todos los estados</option>
+          <option value="Pagado">Pagados</option>
+          <option value="Abonado">Abonados</option>
+          <option value="Pendiente">Pendientes</option>
         </select>
+        <button class="btn-green" id="btn-sync" onclick="syncFromSheets()">☁️ Sincronizar</button>
+        <button class="btn-secondary" onclick="exportExcel()">📥 Excel</button>
       </div>
-      <div class="field">
-        <label>Método de Pago</label>
-        <select id="f-pago">
-          <option value="">— Seleccione —</option>
-          <option value="Nequi">Nequi</option>
-          <option value="Efectivo">Efectivo</option>
-        </select>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th><th>Comprador</th><th>Ramo</th><th>Precio</th>
+              <th>Abono</th><th>Saldo</th><th>Pago</th><th>Estado</th>
+              <th>Fecha</th><th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="orders-tbody"></tbody>
+        </table>
       </div>
-      <div class="field">
-        <label>Abono Inicial (mín. $10.000)</label>
-        <input type="number" id="f-abono" placeholder="10000" min="10000"/>
-        <span class="abono-hint">El precio total es según el ramo seleccionado</span>
-      </div>
-      <div class="field full">
-        <label>Dirección de Residencia</label>
-        <input type="text" id="f-dir" placeholder="Calle / Carrera, Barrio, Ciudad"/>
-      </div>
-      <div class="field">
-        <label>Nombre a quien se dirige</label>
-        <input type="text" id="f-destinatario" placeholder="Nombre del destinatario"/>
-      </div>
-      <div class="field">
-        <label>Fecha de Entrega</label>
-        <input type="date" id="f-fecha"/>
-      </div>
-      <div class="field full">
-        <label>Dedicatoria</label>
-        <textarea id="f-dedicatoria" placeholder="Escribe aquí tu dedicatoria especial..."></textarea>
+      <div id="orders-empty" class="empty-state" style="display:none">
+        <div class="es-icon">🌷</div><p>No se encontraron pedidos</p>
       </div>
     </div>
-    <div class="btn-actions">
-      <button class="btn-primary" onclick="saveOrder()">💾 Guardar Pedido</button>
-      <button class="btn-secondary" onclick="clearForm()">🗑 Limpiar</button>
+
+    <!-- DASHBOARD -->
+    <div class="page" id="page-dashboard">
+      <h2 class="section-title">📊 Dashboard</h2>
+      <p class="section-sub">Resumen visual de pedidos y ventas</p>
+      <div class="dash-grid" id="dash-stats"></div>
+      <div class="charts-grid">
+        <div class="chart-card"><div class="chart-title">Estado de Pedidos</div><canvas id="chart-estado"></canvas></div>
+        <div class="chart-card"><div class="chart-title">Pedidos por Tipo de Ramo</div><canvas id="chart-ramo"></canvas></div>
+        <div class="chart-card"><div class="chart-title">Método de Pago</div><canvas id="chart-metodo"></canvas></div>
+        <div class="chart-card"><div class="chart-title">Con Burbuja vs Sin Burbuja</div><canvas id="chart-tipo"></canvas></div>
+      </div>
+      <div class="guide-box">
+        <h4>🔧 ¿Cómo conectar Google Sheets? — Guía paso a paso</h4>
+        <ol>
+          <li>Abre <strong>Google Sheets</strong> y crea una hoja nueva. Nómbrala <code>Pedidos</code>.</li>
+          <li>Ve al menú <strong>Extensiones → Apps Script</strong>.</li>
+          <li>Borra todo el código de ejemplo y pega el contenido del archivo <code>apps_script.gs</code> que descargaste junto con esta página.</li>
+          <li>Haz clic en <strong>Implementar → Nueva implementación</strong>. Tipo: <em>Aplicación web</em>. Acceso: <em>Cualquier persona</em>. Haz clic en <strong>Implementar</strong> y copia la URL.</li>
+          <li>Pega esa URL en la barra superior de esta página (campo Google Sheets) y presiona <strong>Guardar URL</strong>.</li>
+          <li>¡Listo! Cada pedido nuevo se guardará automáticamente en tu hoja de cálculo 🎉</li>
+        </ol>
+      </div>
     </div>
-    <div id="form-alert" class="alert"></div>
-  </div>
+
+  </main>
 </div>
 
-<!-- ═══════════════ PEDIDOS ═══════════════ -->
-<div class="page" id="page-pedidos">
-  <h2 class="section-title">📋 Pedidos Registrados</h2>
-  <p class="section-sub">Gestione, exporte y genere recibos de sus pedidos</p>
-  <div class="orders-toolbar">
-    <input class="search-box" id="search-input" placeholder="🔍 Buscar comprador, ramo..." oninput="renderOrders()"/>
-    <select class="filter-select" id="filter-status" onchange="renderOrders()">
-      <option value="">Todos los estados</option>
-      <option value="Pagado">Pagados</option>
-      <option value="Abonado">Abonados</option>
-      <option value="Pendiente">Pendientes</option>
-    </select>
-    <button class="btn-green" onclick="exportExcel()">📥 Exportar Excel</button>
-  </div>
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Comprador</th>
-          <th>Ramo</th>
-          <th>Precio</th>
-          <th>Abono</th>
-          <th>Saldo</th>
-          <th>Pago</th>
-          <th>Estado</th>
-          <th>Fecha</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody id="orders-tbody"></tbody>
-    </table>
-  </div>
-  <div id="orders-empty" class="empty-state" style="display:none">
-    <div class="es-icon">🌷</div>
-    <p>No se encontraron pedidos</p>
-  </div>
-</div>
-
-<!-- ═══════════════ DASHBOARD ═══════════════ -->
-<div class="page" id="page-dashboard">
-  <h2 class="section-title">📊 Dashboard</h2>
-  <p class="section-sub">Resumen visual de pedidos y ventas</p>
-  <div class="dash-grid" id="dash-stats"></div>
-  <div class="charts-grid">
-    <div class="chart-card">
-      <div class="chart-title">Estado de Pedidos</div>
-      <canvas id="chart-estado"></canvas>
-    </div>
-    <div class="chart-card">
-      <div class="chart-title">Pedidos por Tipo de Ramo</div>
-      <canvas id="chart-ramo"></canvas>
-    </div>
-    <div class="chart-card">
-      <div class="chart-title">Método de Pago</div>
-      <canvas id="chart-metodo"></canvas>
-    </div>
-    <div class="chart-card">
-      <div class="chart-title">Ramos con vs sin Burbuja</div>
-      <canvas id="chart-tipo"></canvas>
-    </div>
-  </div>
-</div>
-
-</main>
-
-<!-- ═══════════════ MODAL DETALLE / EDITAR ═══════════════ -->
+<!-- MODAL -->
 <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
-  <div class="modal" id="modal-content">
-    <h3 id="modal-title">Detalle del Pedido</h3>
+  <div class="modal">
+    <h3 id="modal-title"></h3>
     <div id="modal-body"></div>
     <div class="modal-actions" id="modal-actions"></div>
   </div>
 </div>
 
 <script>
-// ════════════════════════════════════════
-//   DATA
-// ════════════════════════════════════════
-const RAMOS = [
-  {id:'r1', nombre:'Ramo de flores rojas con negro',       emoji:'🌹', burbuja:false, precio:65000},
-  {id:'r2', nombre:'Ramo de flores rojas con blanco',      emoji:'🌹', burbuja:false, precio:65000},
-  {id:'r3', nombre:'Ramo de flores rosadas con blanco',    emoji:'💐', burbuja:false, precio:65000},
-  {id:'r4', nombre:'Ramo de flores rojas con negro y burbuja',   emoji:'🎈', burbuja:true,  precio:65000},
-  {id:'r5', nombre:'Ramo de flores rosadas con blanco y burbuja',emoji:'🎈', burbuja:true,  precio:65000},
-  {id:'r6', nombre:'Ramo de flores rosadas con rosado y burbuja',emoji:'🎈', burbuja:true,  precio:65000},
-];
+// ══════════════════════════════════════
+//  CREDENCIALES
+// ══════════════════════════════════════
+const CREDS={user:'floristeria_1010',pass:'harri3030'};
 
-function loadOrders(){return JSON.parse(localStorage.getItem('hvh_orders')||'[]');}
-function saveOrders(arr){localStorage.setItem('hvh_orders',JSON.stringify(arr));}
-function fmt(n){return 'COP $'+Number(n).toLocaleString('es-CO');}
-function fmtDate(d){if(!d)return '—';const [y,m,da]=d.split('-');return `${da}/${m}/${y}`;}
-function getStatus(o){
-  if(o.abono>=o.precio)return 'Pagado';
-  if(o.abono>0)return 'Abonado';
-  return 'Pendiente';
+function doLogin(){
+  const u=document.getElementById('login-user').value.trim();
+  const p=document.getElementById('login-pass').value;
+  if(u===CREDS.user&&p===CREDS.pass){
+    document.getElementById('login-error').style.display='none';
+    document.getElementById('login-screen').style.display='none';
+    document.getElementById('app-screen').style.display='block';
+    initApp();
+  }else{
+    document.getElementById('login-error').style.display='block';
+    document.getElementById('login-pass').value='';
+  }
+}
+function doLogout(){
+  document.getElementById('app-screen').style.display='none';
+  document.getElementById('login-screen').style.display='flex';
+  document.getElementById('login-user').value='';
+  document.getElementById('login-pass').value='';
 }
 
-// ════════════════════════════════════════
-//   NAVIGATION
-// ════════════════════════════════════════
+// ══════════════════════════════════════
+//  RAMOS — Sin burbuja $55.000 | Con burbuja $65.000
+// ══════════════════════════════════════
+const RAMOS=[
+  {id:'r1',nombre:'Ramo de flores rojas con negro',               burbuja:false,precio:55000},
+  {id:'r2',nombre:'Ramo de flores rojas con blanco',              burbuja:false,precio:55000},
+  {id:'r3',nombre:'Ramo de flores rosadas con blanco',            burbuja:false,precio:55000},
+  {id:'r4',nombre:'Ramo de flores rojas con negro y burbuja',     burbuja:true, precio:65000},
+  {id:'r5',nombre:'Ramo de flores rosadas con blanco y burbuja',  burbuja:true, precio:65000},
+  {id:'r6',nombre:'Ramo de flores rosadas con rosado y burbuja',  burbuja:true, precio:65000},
+];
+
+// ══════════════════════════════════════
+//  STORAGE HELPERS
+// ══════════════════════════════════════
+const loadOrders=()=>JSON.parse(localStorage.getItem('hvh_orders')||'[]');
+const saveOrders=a=>localStorage.setItem('hvh_orders',JSON.stringify(a));
+const getScriptUrl=()=>localStorage.getItem('hvh_script_url')||'';
+const setScriptUrl=u=>localStorage.setItem('hvh_script_url',u);
+const fmt=n=>'COP $'+Number(n).toLocaleString('es-CO');
+const fmtDate=d=>{if(!d)return '—';const[y,m,da]=d.split('-');return `${da}/${m}/${y}`;};
+const getStatus=o=>o.abono>=o.precio?'Pagado':o.abono>0?'Abonado':'Pendiente';
+
+// ══════════════════════════════════════
+//  GOOGLE SHEETS URL
+// ══════════════════════════════════════
+function saveScriptUrl(){
+  const u=document.getElementById('sheets-url-input').value.trim();
+  setScriptUrl(u);updateSheetsDot();setSyncStatus(u?'✅ URL guardada':'');
+}
+function updateSheetsDot(){
+  const u=(document.getElementById('sheets-url-input').value.trim())||getScriptUrl();
+  const ok=u.startsWith('https://');
+  ['dot-bar','dot-login'].forEach(id=>document.getElementById(id).className='dot '+(ok?'ok':'warn'));
+  document.getElementById('gs-status-txt').textContent=ok?'Conectado':'No configurado';
+}
+const setSyncStatus=msg=>document.getElementById('sheets-sync-status').textContent=msg;
+
+// ══════════════════════════════════════
+//  SHEETS API CALLS
+// ══════════════════════════════════════
+async function sheetsPost(payload){
+  const url=getScriptUrl();if(!url)return;
+  try{await fetch(url,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});}
+  catch(e){console.warn('Sheets error:',e);}
+}
+const pushToSheets=o=>sheetsPost({action:'addOrder',order:o});
+const updateInSheets=o=>sheetsPost({action:'updateOrder',order:o});
+const deleteInSheets=id=>sheetsPost({action:'deleteOrder',id});
+
+async function syncFromSheets(){
+  const url=getScriptUrl();
+  if(!url){setSyncStatus('⚠️ Configura la URL primero');return;}
+  const btn=document.getElementById('btn-sync');
+  btn.innerHTML='☁️ Sincronizando<span class="spinner"></span>';btn.disabled=true;
+  try{
+    const res=await fetch(url+'?action=getOrders');
+    const data=await res.json();
+    if(Array.isArray(data)&&data.length){saveOrders(data);renderOrders();setSyncStatus('✅ '+data.length+' pedidos sincronizados');}
+    else setSyncStatus('ℹ️ Sin datos en Sheets');
+  }catch(e){setSyncStatus('❌ Error de conexión');}
+  btn.innerHTML='☁️ Sincronizar';btn.disabled=false;
+}
+
+// ══════════════════════════════════════
+//  NAVIGATION
+// ══════════════════════════════════════
 function showPage(name){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('page-'+name).classList.add('active');
-  const idx={catalogo:0,nuevo:1,pedidos:2,dashboard:3}[name];
-  document.querySelectorAll('.nav-btn')[idx].classList.add('active');
+  document.querySelectorAll('.nav-btn')[{catalogo:0,nuevo:1,pedidos:2,dashboard:3}[name]].classList.add('active');
   if(name==='pedidos')renderOrders();
   if(name==='dashboard')renderDashboard();
   if(name==='catalogo')renderCatalog();
 }
 
-// ════════════════════════════════════════
-//   CATALOG
-// ════════════════════════════════════════
+// ══════════════════════════════════════
+//  CATALOG
+// ══════════════════════════════════════
 function renderCatalog(){
   const orders=loadOrders();
-  const grid=document.getElementById('catalog-grid');
-  grid.innerHTML=RAMOS.map(r=>{
-    const count=orders.filter(o=>o.ramo===r.id).length;
+  document.getElementById('catalog-grid').innerHTML=RAMOS.map(r=>{
+    const n=orders.filter(o=>o.ramoId===r.id).length;
     return `<div class="bouquet-card">
       <span class="bouquet-emoji">${r.burbuja?'🌺🎈':'🌺'}</span>
       <div class="bouquet-name">${r.nombre}</div>
-      <span class="bouquet-badge ${r.burbuja?'badge-burbuja':'badge-simple'}">${r.burbuja?'Con Burbuja':'Sin Burbuja'}</span>
+      <span class="bouquet-badge ${r.burbuja?'badge-burbuja':'badge-simple'}">${r.burbuja?'Con Burbuja 🎈':'Sin Burbuja'}</span>
       <div class="bouquet-price">${fmt(r.precio)} <span>/ ramo</span></div>
-      <div class="stock-bar"><div class="stock-fill" style="width:${Math.min(count*20,100)}%"></div></div>
-      <div style="font-size:.75rem;color:var(--text-muted);margin-top:5px;">${count} pedido${count!==1?'s':''} registrado${count!==1?'s':''}</div>
+      <div class="stock-bar"><div class="stock-fill" style="width:${Math.min(n*20,100)}%"></div></div>
+      <div style="font-size:.75rem;color:var(--text-muted);margin-top:5px;">${n} pedido${n!==1?'s':''} registrado${n!==1?'s':''}</div>
     </div>`;
   }).join('');
 }
 
-// ════════════════════════════════════════
-//   POPULATE SELECT
-// ════════════════════════════════════════
+// ══════════════════════════════════════
+//  FORM
+// ══════════════════════════════════════
 function populateSelect(){
   const sel=document.getElementById('f-ramo');
   RAMOS.forEach(r=>{
     const op=document.createElement('option');
-    op.value=r.id; op.textContent=r.nombre+' – '+fmt(r.precio);
+    op.value=r.id;op.textContent=r.nombre+' — '+fmt(r.precio);
     sel.appendChild(op);
   });
 }
+function updatePrecioHint(){
+  const r=RAMOS.find(x=>x.id===document.getElementById('f-ramo').value);
+  const el=document.getElementById('precio-hint');
+  if(r){el.textContent='Precio total: '+fmt(r.precio);el.style.cssText='color:var(--rose-dark);font-weight:700';}
+  else{el.textContent='Seleccione un ramo para ver el precio total';el.style.cssText='';}
+}
 
-// ════════════════════════════════════════
-//   SAVE ORDER
-// ════════════════════════════════════════
-function saveOrder(){
-  const alert=document.getElementById('form-alert');
-  alert.className='alert'; alert.style.display='none';
-
+async function saveOrder(){
   const comprador=document.getElementById('f-comprador').value.trim();
   const ramoId=document.getElementById('f-ramo').value;
   const pago=document.getElementById('f-pago').value;
@@ -384,66 +502,55 @@ function saveOrder(){
   const fecha=document.getElementById('f-fecha').value;
   const dedicatoria=document.getElementById('f-dedicatoria').value.trim();
 
-  if(!comprador||!ramoId||!pago||!dir||!dest){
-    showAlert('form-alert','⚠️ Complete todos los campos obligatorios.','error'); return;
-  }
+  if(!comprador||!ramoId||!pago||!dir||!dest)
+    return showAlert('form-alert','⚠️ Complete todos los campos obligatorios.','error');
   const ramo=RAMOS.find(r=>r.id===ramoId);
-  if(abono<10000){
-    showAlert('form-alert','⚠️ El abono mínimo es de $10.000.','error'); return;
-  }
-  if(abono>ramo.precio){
-    showAlert('form-alert','⚠️ El abono no puede superar el precio del ramo.','error'); return;
-  }
+  if(abono<10000) return showAlert('form-alert','⚠️ El abono mínimo es de $10.000.','error');
+  if(abono>ramo.precio) return showAlert('form-alert','⚠️ El abono no puede superar el precio del ramo ('+fmt(ramo.precio)+').','error');
 
-  const orders=loadOrders();
-  const newOrder={
-    id: Date.now(),
-    comprador, ramoId, ramoNombre: ramo.nombre, precio: ramo.precio,
-    pago, abono, dir, dest, fecha, dedicatoria,
-    createdAt: new Date().toISOString().slice(0,10)
-  };
-  orders.push(newOrder);
-  saveOrders(orders);
+  const btn=document.getElementById('btn-save-order');
+  btn.innerHTML='Guardando<span class="spinner"></span>';btn.disabled=true;
+
+  const order={id:Date.now(),comprador,ramoId,ramoNombre:ramo.nombre,precio:ramo.precio,
+    pago,abono,dir,dest,fecha,dedicatoria,createdAt:new Date().toISOString().slice(0,10)};
+  const orders=loadOrders();orders.push(order);saveOrders(orders);
+  await pushToSheets(order);
+
+  btn.innerHTML='💾 Guardar Pedido';btn.disabled=false;
   clearForm();
-  showAlert('form-alert','✅ Pedido guardado exitosamente.','success');
+  showAlert('form-alert','✅ Pedido guardado'+(getScriptUrl()?' y enviado a Google Sheets ☁️':'')+'!','success');
 }
 
 function clearForm(){
   ['f-comprador','f-ramo','f-pago','f-abono','f-dir','f-destinatario','f-fecha','f-dedicatoria']
-    .forEach(id=>{document.getElementById(id).value='';});
+    .forEach(id=>document.getElementById(id).value='');
+  updatePrecioHint();
+  document.getElementById('f-fecha').value=new Date().toISOString().slice(0,10);
 }
 
 function showAlert(id,msg,type){
-  const el=document.getElementById(id);
-  el.textContent=msg; el.className='alert '+type;
-  setTimeout(()=>{el.className='alert';},4000);
+  const el=document.getElementById(id);el.textContent=msg;el.className='alert '+type;
+  setTimeout(()=>el.className='alert',5000);
 }
 
-// ════════════════════════════════════════
-//   RENDER ORDERS TABLE
-// ════════════════════════════════════════
+// ══════════════════════════════════════
+//  ORDERS TABLE
+// ══════════════════════════════════════
 function renderOrders(){
   const orders=loadOrders();
   const q=(document.getElementById('search-input').value||'').toLowerCase();
   const st=document.getElementById('filter-status').value;
   const tbody=document.getElementById('orders-tbody');
   const empty=document.getElementById('orders-empty');
-
-  let filtered=orders.filter(o=>{
-    const match=o.comprador.toLowerCase().includes(q)||o.ramoNombre.toLowerCase().includes(q);
-    const status=getStatus(o);
-    return match&&(!st||status===st);
+  const filtered=orders.filter(o=>{
+    const m=o.comprador.toLowerCase().includes(q)||o.ramoNombre.toLowerCase().includes(q);
+    return m&&(!st||getStatus(o)===st);
   });
-
-  if(!filtered.length){
-    tbody.innerHTML=''; empty.style.display='block'; return;
-  }
+  if(!filtered.length){tbody.innerHTML='';empty.style.display='block';return;}
   empty.style.display='none';
-
   tbody.innerHTML=filtered.map((o,i)=>{
-    const status=getStatus(o);
-    const saldo=o.precio-o.abono;
-    const cls=status==='Pagado'?'pagado':status==='Abonado'?'abonado':'pendiente';
+    const st=getStatus(o),saldo=o.precio-o.abono;
+    const cls=st==='Pagado'?'pagado':st==='Abonado'?'abonado':'pendiente';
     return `<tr>
       <td>${i+1}</td>
       <td><strong>${o.comprador}</strong><br><small style="color:var(--text-muted)">${o.dest}</small></td>
@@ -452,213 +559,143 @@ function renderOrders(){
       <td style="color:var(--green);font-weight:700">${fmt(o.abono)}</td>
       <td style="color:${saldo>0?'var(--red)':'var(--green)'};font-weight:700">${saldo>0?fmt(saldo):'—'}</td>
       <td>${o.pago}</td>
-      <td><span class="badge-pago ${cls}">${status}</span></td>
+      <td><span class="badge-pago ${cls}">${st}</span></td>
       <td>${fmtDate(o.fecha)}</td>
-      <td>
-        <div class="td-actions">
-          <button class="btn-secondary" style="padding:6px 12px;font-size:.78rem" onclick="openDetail(${o.id})">👁 Ver</button>
-          ${status!=='Pagado'?`<button class="btn-green" style="padding:6px 12px;font-size:.78rem" onclick="openAbono(${o.id})">💰 Abonar</button>`:''}
-          ${status==='Pagado'?`<button class="btn-green" style="padding:6px 12px;font-size:.78rem" onclick="generatePDF(${o.id})">🧾 Recibo</button>`:''}
-          <button class="btn-danger" onclick="deleteOrder(${o.id})">🗑</button>
-        </div>
-      </td>
+      <td><div class="td-actions">
+        <button class="btn-secondary" style="padding:6px 12px;font-size:.78rem" onclick="openDetail(${o.id})">👁 Ver</button>
+        ${st!=='Pagado'?`<button class="btn-green" style="padding:6px 12px;font-size:.78rem" onclick="openAbono(${o.id})">💰 Abonar</button>`:''}
+        ${st==='Pagado'?`<button class="btn-green" style="padding:6px 12px;font-size:.78rem" onclick="generatePDF(${o.id})">🧾 Recibo</button>`:''}
+        <button class="btn-danger" onclick="deleteOrder(${o.id})">🗑</button>
+      </div></td>
     </tr>`;
   }).join('');
 }
 
-// ════════════════════════════════════════
-//   MODAL DETAIL
-// ════════════════════════════════════════
+// ══════════════════════════════════════
+//  MODALS
+// ══════════════════════════════════════
 function openDetail(id){
-  const orders=loadOrders();
-  const o=orders.find(x=>x.id===id);
-  if(!o)return;
-  const status=getStatus(o);
-  const saldo=o.precio-o.abono;
-  document.getElementById('modal-title').textContent='📋 Detalle del Pedido #'+id;
-  document.getElementById('modal-body').innerHTML=`
-    <table style="width:100%;border-collapse:collapse;font-size:.9rem">
-      ${row('Comprador',o.comprador)}
-      ${row('Ramo',o.ramoNombre)}
-      ${row('Precio',fmt(o.precio))}
-      ${row('Abono',fmt(o.abono))}
-      ${row('Saldo',saldo>0?fmt(saldo):'<span style="color:var(--green)">¡Pagado!</span>')}
-      ${row('Método de Pago',o.pago)}
-      ${row('Estado',`<span class="badge-pago ${status==='Pagado'?'pagado':status==='Abonado'?'abonado':'pendiente'}">${status}</span>`)}
-      ${row('Destinatario',o.dest)}
-      ${row('Dirección',o.dir)}
-      ${row('Fecha Entrega',fmtDate(o.fecha))}
-      ${row('Dedicatoria',o.dedicatoria||'—')}
-      ${row('Registrado',fmtDate(o.createdAt))}
-    </table>`;
-  const actions=document.getElementById('modal-actions');
-  actions.innerHTML=`<button class="btn-secondary" onclick="closeModal()">Cerrar</button>
-    ${status==='Pagado'?`<button class="btn-green" onclick="generatePDF(${id});closeModal()">🧾 Generar Recibo PDF</button>`:''}`;
+  const o=loadOrders().find(x=>x.id===id);if(!o)return;
+  const st=getStatus(o),saldo=o.precio-o.abono;
+  document.getElementById('modal-title').textContent='📋 Detalle del Pedido';
+  document.getElementById('modal-body').innerHTML=`<table style="width:100%;border-collapse:collapse;font-size:.9rem">
+    ${r('Comprador',o.comprador)}${r('Ramo',o.ramoNombre)}
+    ${r('Precio',fmt(o.precio))}${r('Abono',fmt(o.abono))}
+    ${r('Saldo',saldo>0?fmt(saldo):'<span style="color:var(--green)">¡Pagado!</span>')}
+    ${r('Método de Pago',o.pago)}
+    ${r('Estado',`<span class="badge-pago ${st==='Pagado'?'pagado':st==='Abonado'?'abonado':'pendiente'}">${st}</span>`)}
+    ${r('Destinatario',o.dest)}${r('Dirección',o.dir)}
+    ${r('Fecha Entrega',fmtDate(o.fecha))}${r('Dedicatoria',o.dedicatoria||'—')}
+    ${r('Registrado',fmtDate(o.createdAt))}
+  </table>`;
+  document.getElementById('modal-actions').innerHTML=`
+    <button class="btn-secondary" onclick="closeModal()">Cerrar</button>
+    ${st==='Pagado'?`<button class="btn-green" onclick="generatePDF(${id});closeModal()">🧾 Generar Recibo PDF</button>`:''}`;
   document.getElementById('modal-overlay').classList.add('open');
 }
+const r=(label,val)=>`<tr><td style="padding:7px 8px;font-weight:700;color:var(--text-muted);width:140px">${label}</td><td style="padding:7px 8px">${val}</td></tr>`;
 
-function row(label,val){
-  return `<tr><td style="padding:7px 8px;font-weight:700;color:var(--text-muted);width:140px">${label}</td><td style="padding:7px 8px">${val}</td></tr>`;
-}
-
-// ════════════════════════════════════════
-//   MODAL ABONO
-// ════════════════════════════════════════
 function openAbono(id){
-  const orders=loadOrders();
-  const o=orders.find(x=>x.id===id);
-  if(!o)return;
+  const o=loadOrders().find(x=>x.id===id);if(!o)return;
   const saldo=o.precio-o.abono;
   document.getElementById('modal-title').textContent='💰 Registrar Abono';
   document.getElementById('modal-body').innerHTML=`
-    <p style="margin-bottom:14px;color:var(--text-muted)">
-      <strong>${o.comprador}</strong> · ${o.ramoNombre}<br>
-      Saldo pendiente: <strong style="color:var(--rose-dark)">${fmt(saldo)}</strong>
-    </p>
-    <div class="field">
-      <label>Monto a abonar (mín. $10.000)</label>
-      <input type="number" id="abono-input" placeholder="10000" min="10000" max="${saldo}" value="${saldo}"/>
-    </div>
+    <p style="margin-bottom:14px;color:var(--text-muted)"><strong>${o.comprador}</strong> · ${o.ramoNombre}<br>
+    Saldo pendiente: <strong style="color:var(--rose-dark)">${fmt(saldo)}</strong></p>
+    <div class="field"><label>Monto a abonar (mín. $10.000)</label>
+    <input type="number" id="abono-input" placeholder="10000" min="10000" max="${saldo}" value="${saldo}"/></div>
     <div id="abono-alert" class="alert" style="margin-top:10px"></div>`;
   document.getElementById('modal-actions').innerHTML=`
     <button class="btn-secondary" onclick="closeModal()">Cancelar</button>
     <button class="btn-primary" onclick="applyAbono(${id})">Aplicar Abono</button>`;
   document.getElementById('modal-overlay').classList.add('open');
 }
-
-function applyAbono(id){
+async function applyAbono(id){
   const val=parseFloat(document.getElementById('abono-input').value)||0;
-  if(val<10000){showAlert('abono-alert','⚠️ Mínimo $10.000','error');return;}
-  const orders=loadOrders();
-  const o=orders.find(x=>x.id===id);
-  const saldo=o.precio-o.abono;
-  if(val>saldo){showAlert('abono-alert','⚠️ El abono supera el saldo.','error');return;}
+  if(val<10000)return showAlert('abono-alert','⚠️ Mínimo $10.000','error');
+  const orders=loadOrders(),o=orders.find(x=>x.id===id),saldo=o.precio-o.abono;
+  if(val>saldo)return showAlert('abono-alert','⚠️ El abono supera el saldo.','error');
   o.abono=Math.min(o.abono+val,o.precio);
-  saveOrders(orders);
-  closeModal();
-  renderOrders();
+  saveOrders(orders);await updateInSheets(o);closeModal();renderOrders();
 }
-
 function closeModal(e){
   if(e&&e.target!==document.getElementById('modal-overlay'))return;
   document.getElementById('modal-overlay').classList.remove('open');
 }
 
-// ════════════════════════════════════════
-//   DELETE ORDER
-// ════════════════════════════════════════
-function deleteOrder(id){
-  if(!confirm('¿Eliminar este pedido?'))return;
+// ══════════════════════════════════════
+//  DELETE
+// ══════════════════════════════════════
+async function deleteOrder(id){
+  if(!confirm('¿Eliminar este pedido definitivamente?'))return;
   saveOrders(loadOrders().filter(o=>o.id!==id));
-  renderOrders();
+  await deleteInSheets(id);renderOrders();
 }
 
-// ════════════════════════════════════════
-//   EXPORT EXCEL
-// ════════════════════════════════════════
+// ══════════════════════════════════════
+//  EXCEL EXPORT
+// ══════════════════════════════════════
 function exportExcel(){
-  const orders=loadOrders();
-  if(!orders.length){alert('No hay pedidos para exportar.');return;}
+  const orders=loadOrders();if(!orders.length)return alert('No hay pedidos para exportar.');
   const data=orders.map((o,i)=>({
-    '#': i+1,
-    'Comprador': o.comprador,
-    'Tipo de Ramo': o.ramoNombre,
-    'Precio (COP)': o.precio,
-    'Abono (COP)': o.abono,
-    'Saldo (COP)': o.precio-o.abono,
-    'Estado': getStatus(o),
-    'Método de Pago': o.pago,
-    'Destinatario': o.dest,
-    'Dirección': o.dir,
-    'Fecha Entrega': fmtDate(o.fecha),
-    'Dedicatoria': o.dedicatoria||'',
-    'Fecha Registro': fmtDate(o.createdAt),
+    '#':i+1,'Comprador':o.comprador,'Tipo de Ramo':o.ramoNombre,
+    'Precio (COP)':o.precio,'Abono (COP)':o.abono,'Saldo (COP)':o.precio-o.abono,
+    'Estado':getStatus(o),'Método de Pago':o.pago,'Destinatario':o.dest,
+    'Dirección':o.dir,'Fecha Entrega':fmtDate(o.fecha),
+    'Dedicatoria':o.dedicatoria||'','Fecha Registro':fmtDate(o.createdAt),
   }));
   const ws=XLSX.utils.json_to_sheet(data);
-  const wb=XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb,ws,'Pedidos');
-  // Column widths
-  ws['!cols']=[{wch:4},{wch:22},{wch:40},{wch:14},{wch:14},{wch:14},{wch:12},{wch:14},{wch:22},{wch:35},{wch:14},{wch:40},{wch:14}];
+  ws['!cols']=[{wch:4},{wch:22},{wch:42},{wch:14},{wch:14},{wch:14},{wch:12},{wch:14},{wch:22},{wch:35},{wch:14},{wch:40},{wch:14}];
+  const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Pedidos');
   XLSX.writeFile(wb,'Floristeria_HVH_Pedidos.xlsx');
 }
 
-// ════════════════════════════════════════
-//   GENERATE PDF RECEIPT
-// ════════════════════════════════════════
+// ══════════════════════════════════════
+//  PDF RECEIPT
+// ══════════════════════════════════════
 function generatePDF(id){
-  const orders=loadOrders();
-  const o=orders.find(x=>x.id===id);
-  if(!o||getStatus(o)!=='Pagado'){alert('Solo se puede generar recibo para pedidos completamente pagados.');return;}
+  const o=loadOrders().find(x=>x.id===id);
+  if(!o||getStatus(o)!=='Pagado')return alert('Solo se puede generar recibo para pedidos completamente pagados.');
   const {jsPDF}=window.jspdf;
   const doc=new jsPDF({unit:'mm',format:'a5'});
-  const W=148, mg=16;
-
-  // Background header
-  doc.setFillColor(143,48,73);
-  doc.rect(0,0,W,38,'F');
-
-  // Logo text
-  doc.setTextColor(255,255,255);
-  doc.setFont('helvetica','bold');
-  doc.setFontSize(20);
-  doc.text('🌸 Floristería HVH',mg,18);
-  doc.setFontSize(9);
-  doc.setFont('helvetica','normal');
-  doc.text('RECIBO DE PAGO',mg,28);
-  doc.text('No. '+o.id,W-mg,28,{align:'right'});
-
-  // Divider
-  doc.setDrawColor(192,84,106);
-  doc.setLineWidth(0.5);
-  doc.line(mg,42,W-mg,42);
-
+  const W=148,mg=16;
+  // Header
+  doc.setFillColor(143,48,73);doc.rect(0,0,W,38,'F');
+  doc.setTextColor(255,255,255);doc.setFont('helvetica','bold');doc.setFontSize(20);
+  doc.text('Floristeria HVH',mg,18);
+  doc.setFontSize(9);doc.setFont('helvetica','normal');
+  doc.text('RECIBO DE PAGO',mg,28);doc.text('No. '+o.id,W-mg,28,{align:'right'});
+  doc.setDrawColor(192,84,106);doc.setLineWidth(0.5);doc.line(mg,42,W-mg,42);
   doc.setTextColor(44,26,34);
   let y=50;
-  function line2(label,val){
-    doc.setFont('helvetica','bold'); doc.setFontSize(8);
-    doc.setTextColor(122,80,96);
+  const line2=(label,val)=>{
+    doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(122,80,96);
     doc.text(label.toUpperCase(),mg,y);
-    doc.setFont('helvetica','normal'); doc.setFontSize(9.5);
-    doc.setTextColor(44,26,34);
-    doc.text(String(val),mg+40,y);
-    y+=8;
-  }
-
-  line2('Comprador:', o.comprador);
-  line2('Ramo:', o.ramoNombre);
-  line2('Destinatario:', o.dest);
-  line2('Dirección:', o.dir);
-  line2('Fecha Entrega:', fmtDate(o.fecha));
-  line2('Método de Pago:', o.pago);
-  y+=2;
-  doc.setDrawColor(220,190,200); doc.line(mg,y,W-mg,y); y+=8;
-  line2('Total Pagado:', fmt(o.precio));
-  y+=4;
-
+    doc.setFont('helvetica','normal');doc.setFontSize(9.5);doc.setTextColor(44,26,34);
+    doc.text(String(val),mg+42,y);y+=8;
+  };
+  line2('Comprador:',o.comprador);line2('Ramo:',o.ramoNombre);
+  line2('Destinatario:',o.dest);line2('Direccion:',o.dir);
+  line2('Fecha Entrega:',fmtDate(o.fecha));line2('Metodo de Pago:',o.pago);
+  y+=2;doc.setDrawColor(220,190,200);doc.line(mg,y,W-mg,y);y+=8;
+  line2('Total Pagado:',fmt(o.precio));y+=4;
   if(o.dedicatoria){
-    doc.setFont('helvetica','bold'); doc.setFontSize(8);
-    doc.setTextColor(122,80,96);
-    doc.text('DEDICATORIA:',mg,y); y+=6;
-    doc.setFont('helvetica','italic'); doc.setFontSize(9);
-    doc.setTextColor(44,26,34);
+    doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(122,80,96);
+    doc.text('DEDICATORIA:',mg,y);y+=6;
+    doc.setFont('helvetica','italic');doc.setFontSize(9);doc.setTextColor(44,26,34);
     const lines=doc.splitTextToSize('"'+o.dedicatoria+'"',W-mg*2);
-    doc.text(lines,mg,y); y+=lines.length*5+4;
+    doc.text(lines,mg,y);y+=lines.length*5+4;
   }
-
-  // Footer
-  doc.setFillColor(245,230,234);
-  doc.rect(0,y+4,W,20,'F');
-  doc.setFont('helvetica','normal'); doc.setFontSize(8);
-  doc.setTextColor(143,48,73);
-  doc.text('¡Gracias por tu compra! 🌹',W/2,y+13,{align:'center'});
-  doc.text('Floristería HVH · Tu felicidad es nuestra pasión',W/2,y+19,{align:'center'});
-
+  doc.setFillColor(245,230,234);doc.rect(0,y+4,W,20,'F');
+  doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(143,48,73);
+  doc.text('Gracias por tu compra!',W/2,y+13,{align:'center'});
+  doc.text('Floristeria HVH - Tu felicidad es nuestra pasion',W/2,y+19,{align:'center'});
   doc.save('Recibo_HVH_'+o.comprador.replace(/\s/g,'_')+'.pdf');
 }
 
-// ════════════════════════════════════════
-//   DASHBOARD
-// ════════════════════════════════════════
+// ══════════════════════════════════════
+//  DASHBOARD
+// ══════════════════════════════════════
 let charts={};
 function renderDashboard(){
   const orders=loadOrders();
@@ -666,67 +703,52 @@ function renderDashboard(){
   const pagados=orders.filter(o=>getStatus(o)==='Pagado').length;
   const abonados=orders.filter(o=>getStatus(o)==='Abonado').length;
   const pendientes=orders.filter(o=>getStatus(o)==='Pendiente').length;
-  const totalRecaudado=orders.reduce((s,o)=>s+o.abono,0);
-  const totalEsperado=orders.reduce((s,o)=>s+o.precio,0);
+  const recaudado=orders.reduce((s,o)=>s+o.abono,0);
+  const esperado=orders.reduce((s,o)=>s+o.precio,0);
 
-  document.getElementById('dash-stats').innerHTML=`
-    ${statCard('📋','Total Pedidos',total)}
-    ${statCard('✅','Pagados',pagados)}
-    ${statCard('💰','Abonados',abonados)}
-    ${statCard('⏳','Pendientes',pendientes)}
-    ${statCard('💵','Recaudado',fmt(totalRecaudado))}
-    ${statCard('🎯','Por Recaudar',fmt(totalEsperado-totalRecaudado))}
-  `;
+  document.getElementById('dash-stats').innerHTML=
+    sc('📋','Total Pedidos',total)+sc('✅','Pagados',pagados)+
+    sc('💰','Abonados',abonados)+sc('⏳','Pendientes',pendientes)+
+    sc('💵','Recaudado',fmt(recaudado))+sc('🎯','Por Recaudar',fmt(esperado-recaudado));
 
-  // Destroy old charts
-  Object.values(charts).forEach(c=>c.destroy());
-  charts={};
+  Object.values(charts).forEach(c=>c.destroy());charts={};
 
-  // Estado
-  charts.estado=new Chart(document.getElementById('chart-estado'),{
-    type:'doughnut',
+  charts.estado=new Chart(document.getElementById('chart-estado'),{type:'doughnut',
     data:{labels:['Pagados','Abonados','Pendientes'],datasets:[{data:[pagados,abonados,pendientes],backgroundColor:['#2e7d52','#1565c0','#c0392b'],borderWidth:2,borderColor:'#fff'}]},
-    options:{plugins:{legend:{position:'bottom'}},responsive:true,maintainAspectRatio:true}
-  });
+    options:{plugins:{legend:{position:'bottom'}},responsive:true,maintainAspectRatio:true}});
 
-  // Por ramo
-  const ramoCount=RAMOS.map(r=>({name:r.nombre.replace('Ramo de flores ','').replace(' y burbuja',' 🎈').replace(' con burbuja',' 🎈'),count:orders.filter(o=>o.ramoId===r.id).length}));
-  charts.ramo=new Chart(document.getElementById('chart-ramo'),{
-    type:'bar',
-    data:{labels:ramoCount.map(x=>x.name),datasets:[{label:'Pedidos',data:ramoCount.map(x=>x.count),backgroundColor:'rgba(192,84,106,.75)',borderColor:'var(--rose-dark)',borderWidth:1.5,borderRadius:6}]},
-    options:{plugins:{legend:{display:false}},responsive:true,maintainAspectRatio:true,scales:{y:{beginAtZero:true,ticks:{stepSize:1}}},indexAxis:'y'}
-  });
+  const rc=RAMOS.map(r=>({
+    name:r.nombre.replace('Ramo de flores ','').replace(' y burbuja',' 🎈').replace(' con burbuja',' 🎈'),
+    count:orders.filter(o=>o.ramoId===r.id).length
+  }));
+  charts.ramo=new Chart(document.getElementById('chart-ramo'),{type:'bar',
+    data:{labels:rc.map(x=>x.name),datasets:[{label:'Pedidos',data:rc.map(x=>x.count),backgroundColor:'rgba(192,84,106,.75)',borderColor:'#8f3049',borderWidth:1.5,borderRadius:6}]},
+    options:{plugins:{legend:{display:false}},responsive:true,maintainAspectRatio:true,scales:{y:{beginAtZero:true,ticks:{stepSize:1}}},indexAxis:'y'}});
 
-  // Método de pago
   const nequi=orders.filter(o=>o.pago==='Nequi').length;
   const efec=orders.filter(o=>o.pago==='Efectivo').length;
-  charts.metodo=new Chart(document.getElementById('chart-metodo'),{
-    type:'pie',
+  charts.metodo=new Chart(document.getElementById('chart-metodo'),{type:'pie',
     data:{labels:['Nequi','Efectivo'],datasets:[{data:[nequi,efec],backgroundColor:['#1565c0','#2e7d52'],borderWidth:2,borderColor:'#fff'}]},
-    options:{plugins:{legend:{position:'bottom'}},responsive:true,maintainAspectRatio:true}
-  });
+    options:{plugins:{legend:{position:'bottom'}},responsive:true,maintainAspectRatio:true}});
 
-  // Burbuja vs sin burbuja
-  const conBurbuja=orders.filter(o=>RAMOS.find(r=>r.id===o.ramoId)?.burbuja).length;
-  const sinBurbuja=orders.length-conBurbuja;
-  charts.tipo=new Chart(document.getElementById('chart-tipo'),{
-    type:'doughnut',
-    data:{labels:['Con Burbuja','Sin Burbuja'],datasets:[{data:[conBurbuja,sinBurbuja],backgroundColor:['#b8860b','#c0546a'],borderWidth:2,borderColor:'#fff'}]},
-    options:{plugins:{legend:{position:'bottom'}},responsive:true,maintainAspectRatio:true}
-  });
+  const conB=orders.filter(o=>RAMOS.find(r=>r.id===o.ramoId)?.burbuja).length;
+  charts.tipo=new Chart(document.getElementById('chart-tipo'),{type:'doughnut',
+    data:{labels:['Con Burbuja ($65.000)','Sin Burbuja ($55.000)'],datasets:[{data:[conB,orders.length-conB],backgroundColor:['#b8860b','#c0546a'],borderWidth:2,borderColor:'#fff'}]},
+    options:{plugins:{legend:{position:'bottom'}},responsive:true,maintainAspectRatio:true}});
 }
+const sc=(icon,label,val)=>`<div class="stat-card"><div class="stat-icon">${icon}</div><div class="stat-val">${val}</div><div class="stat-label">${label}</div></div>`;
 
-function statCard(icon,label,val){
-  return `<div class="stat-card"><div class="stat-icon">${icon}</div><div class="stat-val">${val}</div><div class="stat-label">${label}</div></div>`;
+// ══════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════
+function initApp(){
+  populateSelect();renderCatalog();
+  document.getElementById('f-fecha').value=new Date().toISOString().slice(0,10);
+  const saved=getScriptUrl();
+  if(saved)document.getElementById('sheets-url-input').value=saved;
+  updateSheetsDot();
 }
-
-// ════════════════════════════════════════
-//   INIT
-// ════════════════════════════════════════
-populateSelect();
-renderCatalog();
-// Set today's date as default
-document.getElementById('f-fecha').value=new Date().toISOString().slice(0,10);
+updateSheetsDot(); // update dots on login screen too
 </script>
 </body>
 </html>
